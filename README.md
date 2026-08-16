@@ -1,6 +1,6 @@
 # graph
 
-Version: v0.1.0 (unreleased)
+Version: v0.1.1
 
 `graph` is a small, domain-neutral Go package for immutable directed graph
 snapshots and structural graph algorithms.
@@ -31,7 +31,7 @@ import (
 	"iter"
 	"slices"
 
-	graph "yuki.tang.github.com"
+	graph "github.com/Yui-Qi-Tang/graph"
 )
 
 type source struct {
