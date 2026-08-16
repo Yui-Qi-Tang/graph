@@ -21,6 +21,54 @@ copied during construction, while caller-defined data has shallow-copy semantics
 The package intentionally contains no domain rules, persistence, revision model,
 SAT encoding, plugin system, or mutation API.
 
+## Example
+
+```go
+package main
+
+import (
+	"fmt"
+	"iter"
+	"slices"
+
+	graph "yuki.tang.github.com"
+)
+
+type source struct {
+	nodes []graph.Node[string, struct{}]
+	edges []graph.Edge[string, string, struct{}]
+}
+
+func (s source) Nodes() iter.Seq[graph.Node[string, struct{}]] {
+	return slices.Values(s.nodes)
+}
+
+func (s source) Edges() iter.Seq[graph.Edge[string, string, struct{}]] {
+	return slices.Values(s.edges)
+}
+
+func main() {
+	snapshot, err := graph.Build(source{
+		nodes: []graph.Node[string, struct{}]{
+			{ID: "fetch"}, {ID: "build"}, {ID: "deploy"},
+		},
+		edges: []graph.Edge[string, string, struct{}]{
+			{ID: "fetch-build", From: "fetch", To: "build"},
+			{ID: "build-deploy", From: "build", To: "deploy"},
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	order, err := graph.TopologicalSort(snapshot)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(order) // [fetch build deploy]
+}
+```
+
 ## Verify
 
 ```sh
