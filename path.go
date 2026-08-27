@@ -10,7 +10,12 @@ type Path[NodeID comparable, EdgeID comparable, EdgeData any] struct {
 	Edges []Edge[NodeID, EdgeID, EdgeData]
 }
 
-// FindPath finds the first shortest path by edge count from from to to.
+// FindPath finds the first shortest path by edge count from the source to the destination.
+func (s *Snapshot[NodeID, EdgeID, NodeData, EdgeData]) FindPath(from, to NodeID) (Path[NodeID, EdgeID, EdgeData], bool) {
+	return FindPath(s, from, to)
+}
+
+// FindPath finds the first shortest path by edge count from the source to the destination.
 // Outgoing edge order breaks ties deterministically.
 func FindPath[NodeID comparable, EdgeID comparable, EdgeData any](
 	g Directed[NodeID, EdgeID, EdgeData],

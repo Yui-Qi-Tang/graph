@@ -3,6 +3,11 @@ package graph
 import "iter"
 
 // BFS traverses nodes breadth-first from start.
+func (s *Snapshot[NodeID, EdgeID, NodeData, EdgeData]) BFS(start NodeID) iter.Seq[NodeID] {
+	return BFS(s, start)
+}
+
+// BFS traverses nodes breadth-first from start.
 //
 // The traversal yields start first and then follows outgoing edges in the
 // order supplied by g. Each node is yielded at most once. Callers must provide
@@ -34,6 +39,11 @@ func BFS[NodeID comparable, EdgeID comparable, EdgeData any](
 			}
 		}
 	}
+}
+
+// DFS traverses nodes depth-first in pre-order from start.
+func (s *Snapshot[NodeID, EdgeID, NodeData, EdgeData]) DFS(start NodeID) iter.Seq[NodeID] {
+	return DFS(s, start)
 }
 
 // DFS traverses nodes depth-first in pre-order from start.
@@ -76,7 +86,12 @@ func DFS[NodeID comparable, EdgeID comparable, EdgeData any](
 	}
 }
 
-// Reachable reports whether to can be reached from from.
+// Reachable reports whether the destination can be reached from the source.
+func (s *Snapshot[NodeID, EdgeID, NodeData, EdgeData]) Reachable(from, to NodeID) bool {
+	return Reachable(s, from, to)
+}
+
+// Reachable reports whether the destination can be reached from the source.
 // A node is reachable from itself without traversing an edge.
 func Reachable[NodeID comparable, EdgeID comparable, EdgeData any](
 	g Directed[NodeID, EdgeID, EdgeData],

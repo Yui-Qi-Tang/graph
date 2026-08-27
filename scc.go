@@ -2,6 +2,12 @@ package graph
 
 import "sort"
 
+// StronglyConnectedComponents returns the maximal strongly connected
+// components of the snapshot.
+func (s *Snapshot[NodeID, EdgeID, NodeData, EdgeData]) StronglyConnectedComponents() [][]NodeID {
+	return StronglyConnectedComponents(s)
+}
+
 // StronglyConnectedComponents returns the maximal strongly connected components of g.
 //
 // Nodes within each component and the components themselves are ordered by the

@@ -17,6 +17,8 @@ snapshots and structural graph algorithms.
 
 Node and edge data are transported without interpretation. Snapshot topology is
 copied during construction, while caller-defined data has shallow-copy semantics.
+Snapshot algorithms are available as receiver methods. Package-level functions
+remain available for types implementing `Directed` or `FiniteDirected`.
 
 The package intentionally contains no domain rules, persistence, revision model,
 SAT encoding, plugin system, or mutation API.
@@ -61,7 +63,7 @@ func main() {
 		panic(err)
 	}
 
-	order, err := graph.TopologicalSort(snapshot)
+	order, err := snapshot.TopologicalSort()
 	if err != nil {
 		panic(err)
 	}

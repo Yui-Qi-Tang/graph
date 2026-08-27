@@ -11,6 +11,11 @@ func (e *CycleError[NodeID, EdgeID, EdgeData]) Error() string {
 	return "graph contains a cycle"
 }
 
+// TopologicalSort returns a deterministic topological ordering of the snapshot.
+func (s *Snapshot[NodeID, EdgeID, NodeData, EdgeData]) TopologicalSort() ([]NodeID, error) {
+	return TopologicalSort(s)
+}
+
 // TopologicalSort returns a deterministic topological ordering of g.
 //
 // Zero-indegree nodes are initially queued in NodeIDs order. Nodes made ready

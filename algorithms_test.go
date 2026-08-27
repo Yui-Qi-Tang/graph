@@ -35,19 +35,19 @@ func TestTraversal(t *testing.T) {
 		},
 	)
 
-	if got, want := slices.Collect(BFS(g, "a")), []string{"a", "b", "c", "d", "e"}; !reflect.DeepEqual(got, want) {
+	if got, want := slices.Collect(g.BFS("a")), []string{"a", "b", "c", "d", "e"}; !reflect.DeepEqual(got, want) {
 		t.Errorf("BFS() = %v, want %v", got, want)
 	}
-	if got, want := slices.Collect(DFS(g, "a")), []string{"a", "b", "d", "e", "c"}; !reflect.DeepEqual(got, want) {
+	if got, want := slices.Collect(g.DFS("a")), []string{"a", "b", "d", "e", "c"}; !reflect.DeepEqual(got, want) {
 		t.Errorf("DFS() = %v, want %v", got, want)
 	}
-	if !Reachable(g, "a", "e") {
+	if !g.Reachable("a", "e") {
 		t.Error("Reachable(a, e) = false, want true")
 	}
-	if Reachable(g, "e", "a") {
+	if g.Reachable("e", "a") {
 		t.Error("Reachable(e, a) = true, want false")
 	}
-	if !Reachable(g, "c", "c") {
+	if !g.Reachable("c", "c") {
 		t.Error("Reachable(c, c) = false, want true")
 	}
 }
@@ -64,7 +64,7 @@ func TestFindPath(t *testing.T) {
 		},
 	)
 
-	path, found := FindPath(g, "a", "e")
+	path, found := g.FindPath("a", "e")
 	if !found {
 		t.Fatal("FindPath(a, e) found = false, want true")
 	}
@@ -78,11 +78,11 @@ func TestFindPath(t *testing.T) {
 		t.Errorf("FindPath(a, e) first edge data = %q, want %q", path.Edges[0].Data, "first")
 	}
 
-	same, found := FindPath(g, "c", "c")
+	same, found := g.FindPath("c", "c")
 	if !found || !reflect.DeepEqual(same.Nodes, []string{"c"}) || len(same.Edges) != 0 {
 		t.Errorf("FindPath(c, c) = %#v, %t", same, found)
 	}
-	if _, found := FindPath(g, "e", "a"); found {
+	if _, found := g.FindPath("e", "a"); found {
 		t.Error("FindPath(e, a) found = true, want false")
 	}
 }
@@ -98,7 +98,7 @@ func TestFindCycle(t *testing.T) {
 		},
 	)
 
-	cycle, found := FindCycle(g)
+	cycle, found := g.FindCycle()
 	if !found {
 		t.Fatal("FindCycle() found = false, want true")
 	}
@@ -111,7 +111,7 @@ func TestFindCycle(t *testing.T) {
 	if cycle.Edges[2].Data != "third" {
 		t.Errorf("FindCycle() last edge data = %q, want %q", cycle.Edges[2].Data, "third")
 	}
-	if !HasCycle(g) {
+	if !g.HasCycle() {
 		t.Error("HasCycle() = false, want true")
 	}
 }
@@ -122,7 +122,7 @@ func TestFindCycleSelfLoop(t *testing.T) {
 		[]Edge[string, string, string]{{ID: "aa", From: "a", To: "a"}},
 	)
 
-	cycle, found := FindCycle(g)
+	cycle, found := g.FindCycle()
 	if !found {
 		t.Fatal("FindCycle() found = false, want true")
 	}
@@ -142,7 +142,7 @@ func TestTopologicalSort(t *testing.T) {
 		},
 	)
 
-	order, err := TopologicalSort(g)
+	order, err := g.TopologicalSort()
 	if err != nil {
 		t.Fatalf("TopologicalSort() error = %v", err)
 	}
@@ -160,7 +160,7 @@ func TestTopologicalSortCycleError(t *testing.T) {
 		},
 	)
 
-	order, err := TopologicalSort(g)
+	order, err := g.TopologicalSort()
 	if err == nil {
 		t.Fatal("TopologicalSort() error = nil, want cycle error")
 	}
@@ -206,7 +206,7 @@ func TestStronglyConnectedComponents(t *testing.T) {
 		},
 	)
 
-	got := StronglyConnectedComponents(g)
+	got := g.StronglyConnectedComponents()
 	want := [][]string{{"a", "b"}, {"c", "d"}, {"e", "f"}, {"g"}}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("StronglyConnectedComponents() = %v, want %v", got, want)
@@ -222,10 +222,10 @@ func TestAcyclicGraph(t *testing.T) {
 		},
 	)
 
-	if cycle, found := FindCycle(g); found {
+	if cycle, found := g.FindCycle(); found {
 		t.Errorf("FindCycle() = %#v, true, want false", cycle)
 	}
-	if HasCycle(g) {
+	if g.HasCycle() {
 		t.Error("HasCycle() = true, want false")
 	}
 }

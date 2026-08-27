@@ -9,12 +9,22 @@ type Cycle[NodeID comparable, EdgeID comparable, EdgeData any] struct {
 	Edges []Edge[NodeID, EdgeID, EdgeData]
 }
 
+// HasCycle reports whether the snapshot contains a directed cycle.
+func (s *Snapshot[NodeID, EdgeID, NodeData, EdgeData]) HasCycle() bool {
+	return HasCycle(s)
+}
+
 // HasCycle reports whether g contains a directed cycle.
 func HasCycle[NodeID comparable, EdgeID comparable, EdgeData any](
 	g FiniteDirected[NodeID, EdgeID, EdgeData],
 ) bool {
 	_, found := FindCycle(g)
 	return found
+}
+
+// FindCycle returns the first directed cycle found in stable graph order.
+func (s *Snapshot[NodeID, EdgeID, NodeData, EdgeData]) FindCycle() (Cycle[NodeID, EdgeID, EdgeData], bool) {
+	return FindCycle(s)
 }
 
 // FindCycle returns the first directed cycle found in stable graph order.
