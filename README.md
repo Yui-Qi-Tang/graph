@@ -1,6 +1,6 @@
 # graph
 
-Version: v0.1.2
+Version: v0.1.3
 
 `graph` is a small, domain-neutral Go package for immutable directed graph
 snapshots and structural graph algorithms.
